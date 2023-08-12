@@ -1,4 +1,8 @@
+//estilização
 import "./style.css";
+
+//Rota
+import {Link} from "react-router-dom";
 
 import imgLogo from "../../assets/images/logo.svg";
 import imgfacebook from "../../assets/images/facebook.svg";
@@ -11,14 +15,14 @@ function ListaServico() {
             <div id="sombra"></div>
             <header>
                 <div className="container header_conteudo">
-                    <a className="menu_barras" id="menu_barras" aria-label="abrir menu" aria-expanded="false"
-                        aria-controls="menu_links" aria-haspopup="true" href="#">
+                    <Link className="menu_barras" id="menu_barras" aria-label="abrir menu" aria-expanded="false"
+                        aria-controls="menu_links" aria-haspopup="true" to="#">
                         <div className="barras"></div>
-                    </a>
+                    </Link>
                     <img className="header_logo" src={imgLogo} alt="" />
                     <nav>
                         <div id="menu_links" className="menu_links">
-                            <a href="../Home/index.html">home</a>
+                            <Link to={"/"}>home</Link>
                             <a href="#">serviços</a>
                             <a href="#">cadastro</a>
                         </div>
