@@ -2,128 +2,90 @@
 import "./style.css";
 
 //Rota
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import imgLogo from "../../assets/images/logo.svg";
-import imgfacebook from "../../assets/images/facebook.svg";
-import imgInstagram from "../../assets/images/instagram.svg";
-import imglinkedin from "../../assets/images/linkedin.svg";
+//componentes
+import CardServico from "../../components/CardServico";
+
+//hooks
+import { useEffect, useState } from "react";
+
+import api from "../../utils/api";
 
 function ListaServico() {
+    //State Servico
+    const [servico, setServico] = useState<any[]>([]);
+
+    const [skillDigitado, setSkillDigitado] = useState<string>("");
+
+    function buscarServicoPorSkill(event: any) {
+        //não recarrega a pagina
+        event.preventDefault();
+
+        //filtrar servico pela skill digitada no campo buscar
+        const servicosFiltrados = servico.filter((servico: any) => servico.techs.includes(skillDigitado.toLocaleUpperCase()));
+
+        if (event.target.value === "") {
+            alert("Nenhum desenvolvedor(a) com essa skill :(")
+        } else {
+            //atribui valor de servico filtrado, ao state ListaServicosFiltrados 
+            listarServicos();
+        }
+    }
+
+    function listarServicos() {
+        api.get("servicos")
+            .then((response: any) => {
+                console.log(response);
+                setServico(response.data)
+            })
+            .catch((error: any) => {
+                console.log("Erro ao realizar uma requisição", error);
+            })
+    }
+    useEffect(() => {
+        //executa ação após o componente ser recarregado
+        listarServicos();
+    }, [])
+
+
     return (
-        <div>
-            <div id="sombra"></div>
-            <header>
-                <div className="container header_conteudo">
-                    <Link className="menu_barras" id="menu_barras" aria-label="abrir menu" aria-expanded="false"
-                        aria-controls="menu_links" aria-haspopup="true" to="#">
-                        <div className="barras"></div>
-                    </Link>
-                    <img className="header_logo" src={imgLogo} alt="" />
-                    <nav>
-                        <div id="menu_links" className="menu_links">
-                            <Link to={"/"}>home</Link>
-                            <a href="#">serviços</a>
-                            <a href="#">cadastro</a>
-                        </div>
-                        <a className="header_icone_login" href="../Login/index.html">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512">
-                                <path
-                                    d="M352 96l64 0c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0c53 0 96-43 96-96l0-256c0-53-43-96-96-96l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-9.4 182.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L242.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z" />
-                            </svg>
-                        </a>
-                        <a className="header_botao_login" href="../Login/index.html">login</a>
-                    </nav>
-                </div>
-            </header>
-            <main>
-                <div className="container container_lista_servicos">
-                    <div className="lista_servicos_conteudo">
-                        <h1>Lista de Serviços</h1>
-                        <hr />
-                        <form method="post">
-                            <div className="wrapper_form">
-                                <label htmlFor="busca">Procurar serviços</label>
-                                <div className="campo-label">
-                                    <input type="search" name="campo-busca" id="busca" placeholder="Buscar serviços por tecnologias..." />
-                                    <button type="submit">Buscar</button>
-                                </div>
+        <main id="main_Listaservico">
+            <div className="container container_lista_servicos">
+                <div className="lista_servicos_conteudo">
+                    <h1>Lista de Serviços</h1>
+                    <hr />
+                    <form method="post" onSubmit={buscarServicoPorSkill}>
+                        <div className="wrapper_form">
+                            <label htmlFor="busca">Procurar serviços</label>
+                            <div className="campo-label">
+                                <input type="search" name="campo-busca" id="busca" placeholder="Buscar serviços por tecnologias..." onChange={buscarServicoPorSkill}
+                                    autoComplete="off" />
+                                <button type="submit">Buscar</button>
                             </div>
-                        </form>
-                        <div className="wrapper_lista">
-                            <ul>
-                                <li>
-                                    <div className="servico">
-                                        <div className="topo_servico">
-                                            <h3>Desenvolvimento de site institucional - Gateway de Pagamento / Fintech</h3>
-                                            <span>R$ 1300,00</span>
-                                        </div>
-                                        <p>Desenvolver um site responsivo que seja utilizado como uma plataforma de apresentação do nosso gateway de pagamento. O objetivo principal deste projeto é criar um site atraente e informativo, que demonstre as funcionalidades e benefícios do nosso gateway de pagamento para potenciais clientes.</p>
-                                        <div className="techs">
-                                            <span>HTML</span>
-                                            <span>CSS</span>
-                                            <span>React</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="servico">
-                                        <div className="topo_servico">
-                                            <h3>Bot telegram Pagamento</h3>
-                                            <span>R$ 2400,00</span>
-                                        </div>
-                                        <p>Preciso fazer um código em python para um bot do telegram. O bot será para solicitação de pagamento.</p>
-                                        <div className="techs">
-                                            <span>Python</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="servico">
-                                        <div className="topo_servico">
-                                            <h3>Caixa Rápido</h3>
-                                            <span>R$ 1200,00</span>
-                                        </div>
-                                        <p>Preciso fazer um  software que permita ao usuário fazer o upload de seu extrato bancário em formato( ofx). Dentro do software o mesmo poderá categorizar todas as suas receitas e despesas, tendo categorias sugeridas pelo software e permitindo também personalizações. Após o lançamento de vários extratos o software irá entender que são lançamentos parecidos e fará a categorização de maneira automática, cabendo ao usuário somente categorizar as receitas e despesas que não se repetem. Após a categorização o software irá emitir gráficos e relatórios baseados na categorização das contas.</p>
-                                        <div className="techs">
-                                            <span>Python</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
+                    </form>
+                    <div className="wrapper_lista">
+                        <ul>
+                            {
+                                servico.map((servico: any, indice: number) => {
+                                    return <li key={indice}>
+                                        <CardServico
+                                            id={servico.id}
+                                            valor={servico.valor}
+                                            titulo={servico.nome}
+                                            descricaoServico={servico.descricao}
+                                            listaTechs={servico.techs}
+                                        />
+                                    </li>
+                                })
+                            }
+                        </ul>
                     </div>
                 </div>
-            </main>
-            <footer>
-                <div className="container rodape">
-                    <div className="rodape_conteudo">
-                        <div className="rodape_conteudo_paginas">
-                            <h2>Páginas</h2>
-                            <ul>
-                                <li>Login</li>
-                                <li>Home</li>
-                                <li>Listar Serviços</li>
-                                <li>Cadastrar Cliente</li>
-                                <li>Cadastrar Desenvolvedor</li>
-                            </ul>
-                        </div>
-                        <img src={imgLogo} alt="" />
-                        <div className="rodape_conteudo_contatos">
-                            <h2>Contatos</h2>
-                            <div>
-                                <a href="#"><img src={imgfacebook} alt="" /></a>
-                                <a href="#"><img src={imgInstagram} alt="" /></a>
-                                <a href="#"><img src={imglinkedin} alt="" /></a>
-                            </div>
-                            <a href="mailto:">contato@vsconnect.com</a>
-                        </div>
-                    </div>
-                    <p>todos os direitos reservados ©.</p>
-                </div>
-            </footer>
-        </div>
+            </div>
+        </main>
+
     );
 
 }

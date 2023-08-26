@@ -14,7 +14,7 @@ import imgLogo from "../../assets/images/logo.svg";
 function Footer() {
     return (
         //codigo do footer
-        <footer>
+        <footer id="footer">
         <div className="container rodape">
             <div className="span_dicas">
                 <img src={imgDev} alt="" />
@@ -29,11 +29,24 @@ function Footer() {
                 <div className="rodape_conteudo_paginas">
                     <h2>Páginas</h2>
                     <ul>
-                        <li>Login</li>
-                        <li>Home</li>
-                        <li>Listar Serviços</li>
-                        <li>Cadastrar Cliente</li>
-                        <li>Cadastrar Desenvolvedor</li>
+                        <li>
+                            <Link to={"#"}>Login</Link>
+                            </li>
+                        <li>
+                            <Link to={"/"}>Home</Link>
+                            </li>
+                        <li>
+                            <Link to={"#"}>Listar Serviços</Link>
+                            </li>
+                        <li>
+                            <Link to={"lista/devs"}>Lista Desenvolvedor</Link>
+                            </li>
+                        <li>
+                            <Link to={"#"}>Cadastrar Cliente</Link>
+                        </li>
+                        <li>
+                            <Link to={"#"}>Cadastrar Desenvolvedor</Link>
+                        </li>
                     </ul>
                 </div>
                 <img src={imgLogo} alt="" />
